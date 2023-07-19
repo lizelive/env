@@ -39,6 +39,7 @@ jobs:
         uses: tchupp/actions-detect-directory-changes@v0.1.9
   build:
     runs-on: ubuntu-latest
+    needs: detect-directory-changes
     strategy:
       matrix:
         project: ${{ fromJSON(needs.detect-directory-changes.outputs.changed) }}
