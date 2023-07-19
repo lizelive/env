@@ -37,6 +37,8 @@ jobs:
       - name: Detect Directory Changes
         id: detect
         uses: tchupp/actions-detect-directory-changes@v0.1.9
+        with:
+          included-paths: "!.*"
   build:
     runs-on: ubuntu-latest
     needs: detect-directory-changes
