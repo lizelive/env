@@ -40,6 +40,9 @@ jobs:
     environment: production/${{ matrix.project }}
     concurrency: production-${{ matrix.project }}
     steps:
+      - name: Check disk
+        run: df -h
+        
       - name: Checkout repository
         uses: actions/checkout@v3
 
