@@ -9,7 +9,7 @@ RUN tar -xzf /tmp/vscode_cli.tar.gz -C /bin
 # RUN pip install transformers
 
 # FROM mcr.microsoft.com/devcontainers/universal:linux
-FROM debian
+FROM ghcr.io/lizelive/env/vscode:main
 EXPOSE 8000
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     --mount=target=/var/cache/apt,type=cache,sharing=locked \
