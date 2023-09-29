@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         project:
-          - nvidia-pytorch
+          - vscode
     permissions:
       contents: read
       packages: write
