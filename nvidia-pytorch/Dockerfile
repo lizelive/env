@@ -17,4 +17,4 @@ EXPOSE 8000
 COPY --link --from=downloader /bin/code /usr/local/bin/code
 
 VOLUME "/root/.cache/"
-CMD ["/usr/local/bin/code", "serve-web", "--without-connection-token", "--port=8000", "--host=0.0.0.0", "--server-data-dir" ]
+CMD ["/usr/local/bin/code", "serve-web", "--without-connection-token", "--port=8000", "--host=0.0.0.0" ]
