@@ -1,0 +1,13 @@
+services:
+  mlws:
+    build: .
+    command: nvidia-smi
+    ports:
+      - "localhost:8000:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
