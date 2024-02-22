@@ -16,7 +16,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean \
     && apt-get update \
     && apt-get -y --no-install-recommends install \
-        wget ca-certificates docker.io
+        wget ca-certificates
+
 COPY --link --from=downloader /bin/code /usr/local/bin/code
 VOLUME [ "/vscode-server-data-dir", "/user-data-dir", "/extensions-dir", "/cli-data-dir"]
 WORKDIR /afh
