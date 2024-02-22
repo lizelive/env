@@ -6,16 +6,12 @@ name: Docker
 # documentation.
 
 on:
-  schedule:
-    - cron: '5 4 * * mon'
-  push:
-    branches: [ "main" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "main" ]
-
-
+  workflow_dispatch:
+      inputs:
+        environment:
+          description: 'Environment to deploy'
+          type: environment
+          required: true
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -27,18 +23,14 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project:
-          - vscode
     permissions:
       contents: read
       packages: write
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-    environment: production/${{ matrix.project }}
-    concurrency: production-${{ matrix.project }}
+    environment: ${{ inputs.environment }}
+    concurrency: ${{ inputs.environment }}
     steps:
       - name: Check disk
         run: df -h
@@ -74,15 +66,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.project }}
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ inputs.environment }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
-      - name: Build and push ${{ matrix.project }} Docker image
+      - name: Build and push ${{ inputs.environment }} Docker image
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: ${{ matrix.project }}
+          context: ${{ inputs.environment }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
