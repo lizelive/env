@@ -9,4 +9,5 @@ docker run --name=env --rm -it \
 -v "$HOME/.vscode-server:$HOME/.vscode-server" \
 -v "$HOME/Documents:$HOME/Documents" \
 -v "$HOME/.cache:$HOME/.cache" \
+-w "$HOME/Documents" \
 $(docker build nvidia-pytorch -q)
