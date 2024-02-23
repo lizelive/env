@@ -18,12 +18,14 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     && apt-get -y --no-install-recommends install \
         wget ca-certificates
 
-COPY --link --from=downloader /bin/code /usr/local/bin/code
-VOLUME [ "/vscode-server-data-dir", "/user-data-dir", "/extensions-dir", "/cli-data-dir"]
-WORKDIR /afh
-CMD ["/usr/local/bin/code", "serve-web", "--without-connection-token", "--port=8000", "--host=0.0.0.0", "--server-data-dir", "/vscode-server-data-dir", "--user-data-dir", "/user-data-dir", "--extensions-dir", "/extensions-dir" ]
+ENV VSCODE_APPDATA=/run/code/remote
 
-# alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
+COPY --link --from=downloader /bin/code /usr/local/bin/code
+VOLUME ${VSCODE_APPDATA}
+
+WORKDIR /afh
+CMD ["/usr/local/bin/code", "serve-web", "--without-connection-token", "--port=8000", "--host=0.0.0.0" ]
+
 
 # DOCKER_BUILDKIT=1 docker build . -t vscode; docker run --rm -p 127.0.0.1:8000:8000 -v /var/run/docker.sock:/var/run/docker.sock -v vscode-server-data-dir:/vscode-server-data-dir -v user-data-dir:/user-data-dir -v extensions-dir:/extensions-dir -v cli-data-dir:/cli-data-dir vscode
 HEALTHCHECK  --interval=1m --timeout=3s \
