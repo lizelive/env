@@ -5,7 +5,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean \
     && apt-get update \
     && apt-get -y --no-install-recommends install \
-        sudo doom-dsda freeglut3-dev​​​​​​​
+        sudo doom-dsda freeglut3-dev
 
 RUN --mount=type=cache,target=/root/.cache \
 pip install \
